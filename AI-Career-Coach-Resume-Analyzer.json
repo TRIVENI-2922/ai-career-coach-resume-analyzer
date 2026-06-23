@@ -1,0 +1,117 @@
+{
+  "name": "AI-Career-Coach-Resume-Analyzer",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {
+          "allowFileUploads": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ea9ae5c4-190a-4241-a28d-125ed360a598",
+      "name": "When chat message received",
+      "webhookId": "1db765b8-6dbe-458b-9067-ff16ef4881db"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        224
+      ],
+      "id": "5741ea7e-5ab9-4e30-ac07-749efc1de40f",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "jX8YkHNph696mn3c",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        368,
+        224
+      ],
+      "id": "09661e3f-1c5c-4a3b-9f06-0aaab9871c7b",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You aYou are an AI Career Assistant, Resume Analyzer and Interview Coach.\n\nIf the user provides resume details:\n\n* Create a professional summary\n* Extract technical skills\n* Extract soft skills\n* Identify strengths\n* Identify missing skills\n* Give an ATS score out of 100\n* Suggest improvements\n* Generate 5 interview questions\n\nIf the user asks career questions:\n\n* Suggest suitable jobs\n* Suggest learning paths\n* Give interview preparation tips\n\nRemember the user's name and previous conversation context.\nre a helpful assistant \nIf the user says \"Start Interview\",\nact as a professional interviewer.\n\nAsk one question at a time.\nWait for the user's answer.\nGive feedback and a score out of 10.\nThen ask the next question. \nIf the user asks for a roadmap,\ncreate a detailed learning roadmap with:\n- Skills to learn\n- Free resources\n- Projects to build\n- Timeline \nBased on the user's skills,\nsuggest suitable job roles,\nsalary ranges,\nand skills needed to improve. \nIf the user uploads a resume as a PDF or image:\n\n1. Extract the information.\n2. Create a professional summary.\n3. Identify technical skills.\n4. Identify soft skills.\n5. Estimate ATS score out of 100.\n6. Suggest improvements.\n7. Suggest suitable jobs.\n8. Generate 5 interview questions.\n\nIf the uploaded file is unclear, ask the user for a better copy.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "39c8657b-c55d-400f-b207-751b6ef94672",
+      "name": "AI Agent"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "64f5f1ef-492d-4edf-acb2-6e9f941ad10b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c17c096f600aa9994075e9315d1f6f2ad8e6f2686d173c7b8560fc9ffb0d0d98"
+  },
+  "nodeGroups": [],
+  "id": "iRNs4u3oF6wXVyXa",
+  "tags": []
+}
